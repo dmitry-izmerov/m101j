@@ -23,6 +23,7 @@
     <modules>
         <module>homework-2.4</module>
         <module>homework-3.1</module>
+        <module>homework-3.2</module>
     </modules>
 
     <properties>
