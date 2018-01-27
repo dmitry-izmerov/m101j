@@ -2,9 +2,14 @@ package course;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class BlogPostDAO {
     MongoCollection<Document> postsCollection;
@@ -17,11 +22,7 @@ public class BlogPostDAO {
     public Document findByPermalink(String permalink) {
 
         // XXX HW 3.2,  Work Here
-        Document post = null;
-
-
-
-        return post;
+		return postsCollection.find(eq("permalink", permalink)).first();
     }
 
     // Return a list of posts in descending order. Limit determines
@@ -30,8 +31,8 @@ public class BlogPostDAO {
 
         // XXX HW 3.2,  Work Here
         // Return a list of DBObjects, each one a post from the posts collection
-        List<Document> posts = null;
-
+        List<Document> posts = new ArrayList<>();
+		postsCollection.find().sort(Sorts.descending("date")).limit(limit).into(posts);
         return posts;
     }
 
@@ -58,6 +59,15 @@ public class BlogPostDAO {
         // Build the post object and insert it
         Document post = new Document();
 
+        post.put("title", title);
+		post.put("author", username);
+		post.put("body", body);
+        post.put("permalink", permalink);
+        post.put("tags", tags);
+        post.put("comments", new ArrayList<>());
+		post.put("date", new Date());
+
+		postsCollection.insertOne(post);
 
         return permalink;
     }
