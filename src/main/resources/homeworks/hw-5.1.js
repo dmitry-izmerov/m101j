@@ -1,6 +1,7 @@
 // Homework 5.1 - Finding the most frequent author of comments on your blog
 
-// use blog;
+use blog;
+
 db.posts.aggregate([
 	{'$unwind': '$comments'},
 	{
